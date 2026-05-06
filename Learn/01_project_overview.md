@@ -1,27 +1,25 @@
-# UPI SnapPay - Project Overview
+# UPI SnapPay - Detailed Project Overview
 
 ## 1. Introduction
-**UPI SnapPay** is a WebAI-powered Progressive Web App (PWA) designed to help small and medium merchants verify UPI transactions instantly without needing expensive IoT Soundboxes (like Paytm Soundbox) or exposing their financial data to third-party cloud servers.
+**UPI SnapPay** is a WebAI-powered Progressive Web App (PWA) designed to help small and medium merchants verify UPI transactions instantly. It eliminates the need for expensive hardware (like Paytm Soundbox) and provides a secure, privacy-first way to stop fake receipt fraud without sending any data to the cloud.
 
-## 2. The Problem We Are Solving
-1. **Hardware Cost:** Soundboxes cost ₹2,000-₹5,000 + monthly fees.
-2. **Fake Receipt Fraud:** Scammers use fake apps to generate spoofed payment screenshots, which fool visual inspections by merchants.
-3. **Data Privacy:** Existing digital verification solutions require uploading receipt images to cloud servers, risking exposure of Personally Identifiable Information (PII).
-4. **Offline Capability:** Rural merchants often have poor internet connectivity.
+## 2. The Core Problems We Are Solving
+1. **The Cost of Hardware:** Soundboxes are expensive (₹2,000-₹5,000 upfront + monthly rental fees). For a street vendor, this eats into their daily profit margin.
+2. **The "Fake Receipt" Epidemic:** Scammers use malicious apps to generate fake payment success screens. Visually, they look 100% real. Merchants in a rush just look at the green tick and lose money.
+3. **Data Privacy & Cloud Costs:** Existing digital scanners require you to upload the receipt to a cloud server (like Google Vision API) for processing. This is bad for two reasons:
+   - **Privacy:** You are exposing customer financial data (UPI IDs, names, balances) to a third-party server.
+   - **Latency & Cost:** Cloud APIs cost money per scan and fail if the merchant's internet is slow.
 
-## 3. The Solution
-UPI SnapPay processes transaction receipts (images/screenshots) **entirely on the device (Edge AI)** using WebAssembly and Web Workers. It extracts text, understands the semantic meaning (e.g., who paid whom, and how much), checks for signs of fraud, and logs it into a smart ledger.
+## 3. The UPI SnapPay Solution
+UPI SnapPay acts as an intelligent, offline-capable scanner right in the merchant's pocket. It processes screenshots or photos of receipts **entirely on the device (Edge AI)**. 
 
-## 4. Tech Stack
-- **Frontend Framework:** Nuxt.js 4, Vue 3, TypeScript, TailwindCSS
-- **Optical Character Recognition (OCR):** Tesseract.js (running in Web Workers)
-- **Natural Language Processing (NLP):** Transformers.js via ONNX WebAssembly (using a DistilBERT QA model)
-- **PDF Processing:** pdfjs-dist (for parsing bank statements securely on the client)
-- **Database & Sync:** Firebase / Supabase
-- **Offline Support:** PWA (Progressive Web App) Service Workers
+### How is this possible?
+We use modern web capabilities (WebAssembly and Web Workers) to run complex Artificial Intelligence models directly inside the phone's browser. It extracts the text, understands the context (who paid whom), cross-checks it for fraud, and logs it into a secure ledger.
 
-## 5. Key Features
-- **Zero Cloud Processing:** 100% of OCR and AI runs on the smartphone.
-- **Multi-Provider Support:** Handles GPay, PhonePe, and Paytm receipts.
-- **Fraud Detection:** Detects failed/pending states and cross-verifies receipts against official bank statement PDFs.
-- **Offline-First:** Works without an active internet connection.
+## 4. The Technology Stack Explained Simply
+- **Nuxt.js 4 & Vue 3:** The framework used to build the user interface. It makes the app fast and responsive.
+- **TailwindCSS:** Used for designing a beautiful, modern, fintech-style user interface.
+- **Tesseract.js (OCR):** The "Eyes" of the app. It reads the text from the image. It runs in "Web Workers" so it doesn't freeze the screen.
+- **Transformers.js (DistilBERT):** The "Brain" of the app. A miniaturized AI model running via WebAssembly (ONNX) that actually *understands* the meaning of the text.
+- **pdfjs-dist:** Used to securely read official bank statements directly on the phone to definitively prove a transaction is real.
+- **PWA (Progressive Web App):** Allows the merchant to "Install" the website onto their home screen. It uses "Service Workers" to cache files so the app opens and works even with zero internet connection.
